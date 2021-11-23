@@ -13,12 +13,20 @@ public class GridMapEditor : Editor
 
         GridMap grid = (GridMap)target;
 
-        // แก้ไขช่องใน Grid ที่ไม่ต้องการให้สร้างป้อมหรือ spawn ทรัพยากรได้
+        // ต้องไม่อยู่ในโหมด Edit Passability ถึงจะสามารถ Bake Grid ได้
         if (grid.gameObject.transform.Find("Editor") == null)
         {
+            // แก้ไขช่องใน Grid ที่ไม่ต้องการให้สร้างป้อมหรือ spawn ทรัพยากรได้
             if (GUILayout.Button("Edit Passability"))
             {
+                PassabilityEditor.swap = false;
                 CreatePassabilityEditor(grid);
+            }
+
+            // ทำให้ Grid ทั้งหมดเป็น Passable
+            if (GUILayout.Button("Create/Reset Passability"))
+            {
+                BakeGrid(grid, true);
             }
         }
         else
@@ -26,40 +34,38 @@ public class GridMapEditor : Editor
             if (GUILayout.Button("Apply Passability"))
             {
                 DestroyPassabilityEditor(grid);
+                BakeGrid(grid, false);
             }
-        }
-
-        // Bake Grid ลงไปใน Texture เพื่อใช้ใน runtime
-        // โค้ดส่วนนี้ทำงานเฉพาะใน Editor เท่านั้น ไม่มีผลกับเกมใน runtiem
-        if (GUILayout.Button("Bake"))
-        {
-            BakeGrid(grid);
         }
     }
 
     public void CreatePassabilityEditor(GridMap grid)
     {
+        // Grid ต้องมีขนาดมากกว่า 1 และ ขนาดของ Data ต้องเท่ากับ Grid (ถ้าไม่เท่าต้องกด Bake ก่อน)
         if (grid.size.x > 1 && grid.size.y > 1 && (grid.size.x * grid.size.y) == grid.data.Length)
         {
+            Sprite sprite = grid.gameObject.GetComponent<SpriteRenderer>().sprite;
+            Rect rect = sprite.rect;
+
             GameObject editor = new GameObject("Editor");
             editor.transform.SetParent(grid.gameObject.transform);
 
             Canvas canvas = editor.AddComponent<Canvas>();
 
-            RectTransform rect = canvas.GetComponent<RectTransform>();
-            rect.sizeDelta = rect.anchoredPosition = rect.anchorMin = new Vector2(0, 0);
-            rect.anchorMax = new Vector2(1, 1);
+            RectTransform canvasRect = canvas.GetComponent<RectTransform>();
+            canvasRect.sizeDelta = canvasRect.anchoredPosition = canvasRect.anchorMin = new Vector2(0, 0);
+            canvasRect.anchorMax = new Vector2(1, 1);
 
-           CanvasScaler scalar = editor.AddComponent<CanvasScaler>();
+            CanvasScaler scalar = editor.AddComponent<CanvasScaler>();
             scalar.dynamicPixelsPerUnit = 100; // เพื่อให้สเกลของฟอนต์เข้ากับสเกลของฉากแผนที่
 
             for (int x = 0; x < grid.size.x; x++)
                 for (int y = 0; y < grid.size.y; y++)
                 {
-                    GameObject tile = new GameObject("Passability_" + x + "_" + y);
-                    tile.transform.SetParent(editor.transform);
+                    GameObject cell = new GameObject("Passability_" + x + "_" + y);
+                    cell.transform.SetParent(editor.transform);
 
-                    Text text = tile.AddComponent<Text>();
+                    Passability text = cell.AddComponent<Passability>();
                     text.fontSize = 1;
                     text.fontStyle = FontStyle.Bold;
                     text.alignment = TextAnchor.MiddleCenter;
@@ -67,17 +73,21 @@ public class GridMapEditor : Editor
                     if (grid.data[(x * grid.size.y) + y] > 0)
                     {
                         text.text = "O";
+                        text.passable = true;
                     }
                     else
                     {
                         text.text = "X";
+                        text.passable = false;
                     }
 
-                    RectTransform text_rect = text.GetComponent<RectTransform>();
-                    text_rect.sizeDelta = new Vector2(1.5f, 1.5f);
-                    rect.anchorMax = rect.anchorMin = new Vector2(0, 1);
-                    text_rect.anchoredPosition = new Vector2(1 * 2.2f * x, -1 * 2.2f * y);
-                    text_rect.pivot = new Vector2(0.5f, 0.5f);
+                    RectTransform textRect = text.GetComponent<RectTransform>();
+                    textRect.sizeDelta = new Vector2(1.5f, 1.5f);
+                    textRect.anchorMax = textRect.anchorMin = new Vector2(0, 1);
+
+                    Vector2 cellSize = new Vector2(rect.width / grid.ratio / sprite.pixelsPerUnit / grid.size.x, rect.height / grid.ratio / sprite.pixelsPerUnit / grid.size.y);
+                    textRect.anchoredPosition = new Vector2(1 + (cellSize.x * x), -1 - (cellSize.y * y));
+                    textRect.pivot = new Vector2(0.5f, 0.5f);
                 }
         }
     }
@@ -88,10 +98,18 @@ public class GridMapEditor : Editor
         Object.DestroyImmediate(editor);
     }
 
-
-    public void BakeGrid(GridMap grid)
+    public void ResetPassability(GridMap grid)
     {
-        Rect rect = grid.level.GetComponentInParent<SpriteRenderer>().sprite.rect;
+        if (grid.data != null)
+            for (int i = 0; i < grid.data.Length; i++) {
+                grid.data[i] = 1;
+            }
+    }
+
+    public void BakeGrid(GridMap grid, bool reset)
+    {
+        Sprite sprite = grid.level.GetComponentInParent<SpriteRenderer>().sprite;
+        Rect rect = sprite.rect;
         // คำนวนหาขนาดของ Texture ของ Grid
         Vector2Int size = new Vector2Int((int)(rect.width * grid.ratio), (int)(rect.height * grid.ratio));
 
@@ -111,8 +129,34 @@ public class GridMapEditor : Editor
         // Grid ต้องมีขนาดมากกว่า 1 เช่น กริดแบบ 2x2
         if (grid.size.x > 1 && grid.size.y > 1)
         {
-            grid.data = new byte[grid.size.x * grid.size.y];
+            if (reset)
+            {
+                grid.data = new byte[grid.size.x * grid.size.y];
+                ResetPassability(grid);
+            }
 
+            // ถมสีสำหรับส่วนที่ไม่เป็น Impassable
+            for (int x = 0; x < grid.size.x; x++)
+            {
+                for (int y = 0; y < grid.size.y; y++)
+                {
+                    if (grid.data[(x * grid.size.y) + y] == 0)
+                    {
+                        Vector2 cellSize = new Vector2(size.x / grid.size.x, size.y / grid.size.y);
+                        Vector2Int origin = new Vector2Int((int)cellSize.x * x, (int)cellSize.y * y);
+
+                        //new Vector2(1 + ((gridRect.width / grid.ratio / gridSprite.pixelsPerUnit / grid.size.x) * x), -1 - ((gridRect.height / grid.ratio / gridSprite.pixelsPerUnit / grid.size.y) * y));
+                        for (int px = origin.x; px < origin.x + cellSize.x; px++)
+                        {
+                            for (int py = origin.y; py < origin.y + cellSize.y; py++)
+                            {
+                                image.SetPixel(px, -py, grid.impassablecolor);
+                            }
+                        }
+                    }
+                }
+            }
+            
             Vector2 gridPixelSize = new Vector2(size.x / grid.size.x, size.y / grid.size.y);
             //วาดเส้นแนวตั้ง
             for (int x = 0; x < grid.size.x; x++)
@@ -167,9 +211,9 @@ public class GridMapEditor : Editor
         image.Apply();
 
         // ใส่ Sprite ใน Sprite Renderer
-        Sprite sprite = Sprite.Create(image, new Rect(0, 0, size.x, size.y), new Vector2(0.5f, 0.5f), 100, 0, SpriteMeshType.FullRect);
-        sprite.name = "GridMap";
-        grid.gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
+        Sprite spriteTexture = Sprite.Create(image, new Rect(0, 0, size.x, size.y), new Vector2(0.5f, 0.5f), 100, 0, SpriteMeshType.FullRect);
+        spriteTexture.name = "GridMap";
+        grid.gameObject.GetComponent<SpriteRenderer>().sprite = spriteTexture;
 
         EditorUtility.SetDirty(grid);
 

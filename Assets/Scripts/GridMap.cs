@@ -7,6 +7,7 @@ public class GridMap : MonoBehaviour
 {
     public GameObject level;
     public Color color = Color.black;
+    public Color impassablecolor = new Color(1, 0, 0, 0.5f);
     public int borderSize = 1;
     public Vector2Int size;
     [Tooltip("เนื่องจาก Texture ของฉากแผนที่อาจมีขนาดใหญ่มาก เช่น 4K เราสามารถลดค่านี้เพื่อให้ Texture ของ Grid มีขนาดเล็กกว่าได้")]
@@ -22,6 +23,10 @@ public class GridMap : MonoBehaviour
     void Update()
     {
         
+    }
+    public void SetGrid()
+    {
+        Debug.Log("Jelloo!");
     }
 }
 
