@@ -24,9 +24,9 @@ public class GridMapEditor : Editor
             }
 
             // ทำให้ Grid ทั้งหมดเป็น Passable
-            if (GUILayout.Button("Create/Reset Passability"))
+            if (GUILayout.Button("Bake Grid"))
             {
-                BakeGrid(grid, true);
+                BakeGrid(grid);
             }
         }
         else
@@ -34,7 +34,6 @@ public class GridMapEditor : Editor
             if (GUILayout.Button("Apply Passability"))
             {
                 DestroyPassabilityEditor(grid);
-                BakeGrid(grid, false);
             }
         }
     }
@@ -106,7 +105,7 @@ public class GridMapEditor : Editor
             }
     }
 
-    public void BakeGrid(GridMap grid, bool reset)
+    public void BakeGrid(GridMap grid)
     {
         Sprite sprite = grid.level.GetComponentInParent<SpriteRenderer>().sprite;
         Rect rect = sprite.rect;
@@ -129,34 +128,9 @@ public class GridMapEditor : Editor
         // Grid ต้องมีขนาดมากกว่า 1 เช่น กริดแบบ 2x2
         if (grid.size.x > 1 && grid.size.y > 1)
         {
-            if (reset)
-            {
-                grid.data = new byte[grid.size.x * grid.size.y];
-                ResetPassability(grid);
-            }
-
-            // ถมสีสำหรับส่วนที่ไม่เป็น Impassable
-            for (int x = 0; x < grid.size.x; x++)
-            {
-                for (int y = 0; y < grid.size.y; y++)
-                {
-                    if (grid.data[(x * grid.size.y) + y] == 0)
-                    {
-                        Vector2 cellSize = new Vector2(size.x / grid.size.x, size.y / grid.size.y);
-                        Vector2Int origin = new Vector2Int((int)cellSize.x * x, (int)cellSize.y * y);
-
-                        //new Vector2(1 + ((gridRect.width / grid.ratio / gridSprite.pixelsPerUnit / grid.size.x) * x), -1 - ((gridRect.height / grid.ratio / gridSprite.pixelsPerUnit / grid.size.y) * y));
-                        for (int px = origin.x; px < origin.x + cellSize.x; px++)
-                        {
-                            for (int py = origin.y; py < origin.y + cellSize.y; py++)
-                            {
-                                image.SetPixel(px, -py, grid.impassablecolor);
-                            }
-                        }
-                    }
-                }
-            }
-            
+            grid.data = new byte[grid.size.x * grid.size.y];
+            ResetPassability(grid);
+                                  
             Vector2 gridPixelSize = new Vector2(size.x / grid.size.x, size.y / grid.size.y);
             //วาดเส้นแนวตั้ง
             for (int x = 0; x < grid.size.x; x++)

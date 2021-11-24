@@ -1,0 +1,440 @@
+fileFormatVersion: 2
+guid: 6d3e56366723a1e49867319d3d354558
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5543863775884534940
+    second: kidnpc_0
+  - first:
+      213: -2587976784220942684
+    second: kidnpc_1
+  - first:
+      213: 6953902760222912268
+    second: kidnpc_2
+  - first:
+      213: 9167817336099229770
+    second: kidnpc_3
+  - first:
+      213: -7232057544875588898
+    second: kidnpc_4
+  - first:
+      213: -7074424225073218275
+    second: kidnpc_5
+  - first:
+      213: 5005564997283157508
+    second: kidnpc_6
+  - first:
+      213: 796449679659907781
+    second: kidnpc_7
+  - first:
+      213: -1897626351727299037
+    second: kidnpc_8
+  - first:
+      213: -1011774402097426102
+    second: kidnpc_9
+  - first:
+      213: -4743499177336884767
+    second: kidnpc_10
+  - first:
+      213: -1607705706788106775
+    second: kidnpc_11
+  - first:
+      213: 3334979392827168942
+    second: kidnpc_12
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: kidnpc_0
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 257
+        width: 106
+        height: 76
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c94e0c44bb2cfec40800000000000000
+      internalID: 5543863775884534940
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kidnpc_1
+      rect:
+        serializedVersion: 2
+        x: 197
+        y: 258
+        width: 56
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4ae8d8193d8a51cd0800000000000000
+      internalID: -2587976784220942684
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kidnpc_2
+      rect:
+        serializedVersion: 2
+        x: 306
+        y: 294
+        width: 31
+        height: 28
+      alignment: 9
+      pivot: {x: 0.8007104, y: 0.77239555}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c0fe1b197b9318060800000000000000
+      internalID: 6953902760222912268
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kidnpc_3
+      rect:
+        serializedVersion: 2
+        x: 379
+        y: 294
+        width: 23
+        height: 26
+      alignment: 9
+      pivot: {x: 0.7210733, y: 0.793349}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a40dcd34b41aa3f70800000000000000
+      internalID: 9167817336099229770
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kidnpc_4
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 293
+        width: 29
+        height: 29
+      alignment: 9
+      pivot: {x: 0.5876675, y: 0.8506712}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ed2c182eaf192ab90800000000000000
+      internalID: -7232057544875588898
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kidnpc_5
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 88
+        width: 141
+        height: 135
+      alignment: 9
+      pivot: {x: 0.48797926, y: 0.022912597}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d1db71236a892dd90800000000000000
+      internalID: -7074424225073218275
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kidnpc_6
+      rect:
+        serializedVersion: 2
+        x: 218
+        y: 152
+        width: 47
+        height: 61
+      alignment: 9
+      pivot: {x: 0.48196802, y: 0.041539177}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 406113b28d6577540800000000000000
+      internalID: 5005564997283157508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kidnpc_7
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 189
+        width: 31
+        height: 28
+      alignment: 9
+      pivot: {x: 0.17194982, y: 0.7723961}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ca3a9d83ce8d0b00800000000000000
+      internalID: 796449679659907781
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kidnpc_8
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 191
+        width: 23
+        height: 26
+      alignment: 9
+      pivot: {x: 0.16838406, y: 0.8259442}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 326bfdc13e64aa5e0800000000000000
+      internalID: -1897626351727299037
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kidnpc_9
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 188
+        width: 29
+        height: 29
+      alignment: 9
+      pivot: {x: 0.35388604, y: 0.87989384}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a41562aba8475f1f0800000000000000
+      internalID: -1011774402097426102
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kidnpc_10
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 27
+        width: 61
+        height: 29
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e13a7e51a4bb2eb0800000000000000
+      internalID: -4743499177336884767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kidnpc_11
+      rect:
+        serializedVersion: 2
+        x: 228
+        y: 47
+        width: 31
+        height: 51
+      alignment: 9
+      pivot: {x: 0.6093494, y: 0.93203676}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9edc68b7d2840b9e0800000000000000
+      internalID: -1607705706788106775
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kidnpc_12
+      rect:
+        serializedVersion: 2
+        x: 319
+        y: 48
+        width: 31
+        height: 51
+      alignment: 9
+      pivot: {x: 0.30863705, y: 0.9320372}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea816ba961a384e20800000000000000
+      internalID: 3334979392827168942
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
