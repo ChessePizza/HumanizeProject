@@ -6,14 +6,14 @@ public class PickableItem : MonoBehaviour
 {
     Gameplay gameplay;
     public int slot = -1;
-    public Item type;
+    public ItemType type;
     private void Start()
     {
         gameplay = Camera.main.GetComponent<Gameplay>();
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && slot < 0)
         {
             int slot = gameplay.getEmptySlot();
             if (slot >= 0)

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 
 // Game Data
-public enum Item
+public enum ItemType
 {
     pipe = 0,
     keylock = 1,
@@ -13,7 +13,7 @@ public enum Item
     special = 4
 }
 
-public enum Building
+public enum BuildingType
 {
     fastgun = 0,
     stronggun = 1,
@@ -22,7 +22,7 @@ public enum Building
     superweapon = 4
 }
 
-public enum Monster
+public enum EnemyType
 {
     zombie = 0
 }

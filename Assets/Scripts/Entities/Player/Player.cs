@@ -18,8 +18,8 @@ public class Player : MonoBehaviour
         
     }
 
-    void Update()
-    {        
+	void Update()
+    {
         inputValue = GetComponent<PlayerInput>().actions["Move"].ReadValue<Vector2>();
         Animator anim = GetComponent<Animator>();
 
