@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        
+        GetComponent<PlayerInput>().actions.Enable();
     }
 
 	void Update()

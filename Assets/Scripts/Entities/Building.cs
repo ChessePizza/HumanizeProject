@@ -23,6 +23,11 @@ public class Building : MonoBehaviour
     public BuildingType type;
     public TargetType targetType;
 
+    public Vector2 positionAdjust;
+    public Vector2Int girdPosition;
+
+    public bool isActive = false;
+
     // Start is called before the first frame update
     void Start()
     {

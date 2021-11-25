@@ -21,7 +21,7 @@ public class PassabilityEditor : Editor
             // คัวอย่างเช่น passability_0_0
             string[] coord = o.gameObject.name.Split('_');
 
-            grid.data[(int.Parse(coord[1]) * grid.size.y) + int.Parse(coord[2])] = (byte)(o.passable ? 1 : 0);
+            grid.data[(int.Parse(coord[1]) * grid.size.y) + int.Parse(coord[2])] = (byte)(o.passable ? 0 : 1);
             EditorUtility.SetDirty(o);
             EditorUtility.SetDirty(o.gameObject);
         }

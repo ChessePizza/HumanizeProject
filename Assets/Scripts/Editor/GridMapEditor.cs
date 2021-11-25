@@ -69,7 +69,7 @@ public class GridMapEditor : Editor
                     text.fontStyle = FontStyle.Bold;
                     text.alignment = TextAnchor.MiddleCenter;
 
-                    if (grid.data[(x * grid.size.y) + y] > 0)
+                    if (grid.data[(x * grid.size.y) + y] == 0)
                     {
                         text.text = "O";
                         text.passable = true;
@@ -101,7 +101,7 @@ public class GridMapEditor : Editor
     {
         if (grid.data != null)
             for (int i = 0; i < grid.data.Length; i++) {
-                grid.data[i] = 1;
+                grid.data[i] = 0;
             }
     }
 

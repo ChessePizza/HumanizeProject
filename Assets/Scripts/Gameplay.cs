@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(GameUI))]
@@ -21,19 +22,54 @@ public class Gameplay : MonoBehaviour
     public int maxItem;
     public int countItem;
 
-    // Start is called before the first frame update
+    GameObject buildSlot;
+
+    public Vector2 gridSize;
+    public Vector2 cellSize;
+
     void Start()
     {
         inventory = new GameObject[MAX_INVENTORY];
+
+        // คำนวนขนาดไว้ล่วงหน้า เนื่องจากขนาดของฉากแผนที่ในเกม ไม่มีการเปลี่ยนแปลงระหว่างเล่น
+        Sprite sprite = grid.level.GetComponentInParent<SpriteRenderer>().sprite;
+        Rect rect = sprite.rect;
+
+        // คำนวนหาขนาดของ Grid ในหน่วย Unity Unit
+        gridSize = new Vector2(rect.width / sprite.pixelsPerUnit, rect.height / sprite.pixelsPerUnit);
+        // คำนวณหาขนาดของ Cell ในหน่วย Unity Unit
+        cellSize = new Vector2(rect.width / sprite.pixelsPerUnit / grid.size.x, rect.height / sprite.pixelsPerUnit / grid.size.y);
     }
 
-    // Update is called once per frame
+
     void Update()
     {
-        
-    }
+        if (buildSlot)
+        {
+            Vector3 position = GetComponent<CameraController>().player.transform.position;
 
-    public int getEmptySlot() 
+            Vector2Int gridPoint = new Vector2Int(
+            (int)Mathf.Floor(((gridSize.x / 2) + position.x) / cellSize.x),
+            (int)Mathf.Floor(((gridSize.y / 2) - position.y) / cellSize.y));
+
+            Vector3 point = new Vector3(
+                (-gridSize.x / 2) + ((gridPoint.x * cellSize.x) + (cellSize.x / 2)),
+                 (gridSize.y / 2) - ((gridPoint.y * cellSize.y) + (cellSize.y / 2)), 1);
+
+            if (grid.data[(gridPoint.x * grid.size.y) + gridPoint.y] == 0)
+            {
+                buildSlot.transform.GetChild(0).GetComponent<Building>().girdPosition = gridPoint;
+                GetComponent<GameUI>().buildConfirmButton.gameObject.SetActive(true);
+            }
+            else
+            {
+                GetComponent<GameUI>().buildConfirmButton.gameObject.SetActive(false);
+            }
+
+            buildSlot.transform.position = point;
+        }
+    }
+public int getEmptySlot() 
     {
         for (int i = 0; i < MAX_INVENTORY; i++)
         {
@@ -90,14 +126,40 @@ public class Gameplay : MonoBehaviour
 
     public void build(Building building) 
     {
-        GetComponent<GameUI>().CloseBuildInfo();
-        GameObject o = Instantiate(building.gameObject, Vector3.zero, Quaternion.identity);
-        
-        gameObject.transform.Find("Temp");
+        GameUI gameUI = GetComponent<GameUI>();
+        gameUI.CloseBuildInfo();
+        gameUI.OpenBuildConfirmation();
+
+        buildSlot = new GameObject();
+        buildSlot.name = "BuildSlot";
+        GameObject entity = Instantiate(building.gameObject, Vector3.zero, Quaternion.identity);
+        entity.name = building.name;
+        entity.GetComponent<Building>().girdPosition = new Vector2Int(-1, -1);
+        entity.transform.SetParent(buildSlot.transform);
+        entity.transform.position += new Vector3(building.positionAdjust.x, building.positionAdjust.y, 0.0f);               
     }
 
-	internal void build(object building)
-	{
-		throw new NotImplementedException();
-	}
+    public void addBuild()
+    {
+        GameObject baseBuilder = buildSlot.gameObject;
+        Building building = baseBuilder.transform.GetChild(0).GetComponent<Building>();
+        building.gameObject.GetComponent<BoxCollider2D>().enabled = true;
+
+        // Update Grid Map
+        grid.data[(building.girdPosition.x * grid.size.y) + building.girdPosition.y] = 2;
+        GetComponent<GameUI>().UpdatePassability();
+
+        // Add Building TO Grid
+        baseBuilder.name = "build_" + building.girdPosition.x + "_" + building.girdPosition.y;
+        baseBuilder.transform.SetParent(grid.transform);
+        buildSlot = null;
+        GetComponent<GameUI>().CloseBuildConfirmation();
+    }
+
+    public void discardBuild()
+    {
+        Destroy(buildSlot.gameObject);
+        buildSlot = null;
+        GetComponent<GameUI>().CloseBuildConfirmation();
+    }
 }
