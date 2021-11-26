@@ -18,11 +18,15 @@ public class Gameplay : MonoBehaviour
 
     public GameMode mode;
     public GridMap grid;
+    public GameObject storage;
     public GameObject[] inventory;
     public int maxItem;
-    public int countItem;
+    public int countItem = 0;
+    public int killCount = 0;
 
     GameObject buildSlot;
+    GameUI gameUI;
+    CameraController controller;
 
     public Vector2 gridSize;
     public Vector2 cellSize;
@@ -30,6 +34,9 @@ public class Gameplay : MonoBehaviour
     void Start()
     {
         inventory = new GameObject[MAX_INVENTORY];
+        gameUI = GetComponent<GameUI>();
+        controller = GetComponent<CameraController>();
+        ResetKill();
 
         // คำนวนขนาดไว้ล่วงหน้า เนื่องจากขนาดของฉากแผนที่ในเกม ไม่มีการเปลี่ยนแปลงระหว่างเล่น
         Sprite sprite = grid.level.GetComponentInParent<SpriteRenderer>().sprite;
@@ -46,7 +53,7 @@ public class Gameplay : MonoBehaviour
     {
         if (buildSlot)
         {
-            Vector3 position = GetComponent<CameraController>().player.transform.position;
+            Vector3 position = controller.player.transform.position;
 
             Vector2Int gridPoint = new Vector2Int(
             (int)Mathf.Floor(((gridSize.x / 2) + position.x) / cellSize.x),
@@ -59,17 +66,33 @@ public class Gameplay : MonoBehaviour
             if (grid.data[(gridPoint.x * grid.size.y) + gridPoint.y] == 0)
             {
                 buildSlot.transform.GetChild(0).GetComponent<Building>().girdPosition = gridPoint;
-                GetComponent<GameUI>().buildConfirmButton.gameObject.SetActive(true);
+                gameUI.buildConfirmButton.gameObject.SetActive(true);
             }
             else
             {
-                GetComponent<GameUI>().buildConfirmButton.gameObject.SetActive(false);
+                gameUI.buildConfirmButton.gameObject.SetActive(false);
             }
 
             buildSlot.transform.position = point;
         }
     }
-public int getEmptySlot() 
+
+    // Functions
+    public void ResetKill()
+    {
+        killCount = 0;
+        gameUI.killCountText.text = killCount.ToString();
+    }
+
+    public void updateKill()
+    {
+        killCount++;
+        gameUI.killCountText.text = killCount.ToString();
+    }
+
+    // Item Functions
+
+    public int getEmptySlot() 
     {
         for (int i = 0; i < MAX_INVENTORY; i++)
         {
@@ -82,7 +105,7 @@ public int getEmptySlot()
     {
         //สร้าง Icon ของ Item เพื่อใส่ไว้ใน Slot
         GameObject icon = new GameObject("Icon");
-        icon.transform.SetParent(GetComponent<GameUI>().inventoryUI.transform.Find("Slot" + (slot + 1)));
+        icon.transform.SetParent(gameUI.inventoryUI.transform.Find("Slot" + (slot + 1)));
 
         RectTransform rect = icon.gameObject.AddComponent<RectTransform>();
         rect.anchoredPosition = new Vector2(0.0f, 0.0f);
@@ -97,26 +120,32 @@ public int getEmptySlot()
         Button button = icon.gameObject.AddComponent<Button>();
         button.interactable = true;
         button.image = image;
-        button.onClick.AddListener(() => discardItem(slot));
+        button.onClick.AddListener(() => discardItem(slot, false));
 
         inventory[slot] = item.gameObject;
         item.gameObject.SetActive(false);
     }
 
-    public void discardItem(int slot) 
+    public void discardItem(int slot, bool fulfillment) 
     {
-        GameObject icon = GetComponent<GameUI>().inventoryUI.transform.Find("Slot" + (slot + 1) + "/Icon").gameObject;
+        GameObject icon = gameUI.inventoryUI.transform.Find("Slot" + (slot + 1) + "/Icon").gameObject;
         Destroy(icon.GetComponent<Button>());
         Destroy(icon.GetComponent<Image>());
         Destroy(icon);
 
-        Vector3 position = GetComponent<CameraController>().player.transform.position;
-
         GameObject item = inventory[slot];
         inventory[slot] = null;
-        item.transform.position = position - new Vector3(0.0f, 2.5f, 2.5f);
-        item.SetActive(true);
-        item.GetComponent<PickableItem>().slot = -1;
+        if (fulfillment)
+        {
+            Destroy(item);
+        }
+        else
+        {
+            Vector3 position = controller.player.transform.position;
+            item.transform.position = position - new Vector3(0.0f, 2.5f, 2.5f);
+            item.SetActive(true);
+            item.GetComponent<PickableItem>().slot = -1;
+        }
     }
 
     public void changeMode(GameMode mode) 
@@ -124,9 +153,10 @@ public int getEmptySlot()
         this.mode = mode;
     }
 
+    // Building Functions
+
     public void build(Building building) 
     {
-        GameUI gameUI = GetComponent<GameUI>();
         gameUI.CloseBuildInfo();
         gameUI.OpenBuildConfirmation();
 
@@ -143,23 +173,25 @@ public int getEmptySlot()
     {
         GameObject baseBuilder = buildSlot.gameObject;
         Building building = baseBuilder.transform.GetChild(0).GetComponent<Building>();
-        building.gameObject.GetComponent<BoxCollider2D>().enabled = true;
+        building.isReady = false;
+        building.grid = grid;
+        building.transform.Find("Fulfillment").gameObject.SetActive(true);
 
         // Update Grid Map
         grid.data[(building.girdPosition.x * grid.size.y) + building.girdPosition.y] = 2;
-        GetComponent<GameUI>().UpdatePassability();
+        gameUI.UpdatePassability();
 
         // Add Building TO Grid
         baseBuilder.name = "build_" + building.girdPosition.x + "_" + building.girdPosition.y;
-        baseBuilder.transform.SetParent(grid.transform);
+        baseBuilder.transform.SetParent(storage.transform);
         buildSlot = null;
-        GetComponent<GameUI>().CloseBuildConfirmation();
+        gameUI.CloseBuildConfirmation();
     }
 
     public void discardBuild()
     {
         Destroy(buildSlot.gameObject);
         buildSlot = null;
-        GetComponent<GameUI>().CloseBuildConfirmation();
+        gameUI.CloseBuildConfirmation();
     }
 }

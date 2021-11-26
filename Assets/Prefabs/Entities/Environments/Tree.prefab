@@ -175,7 +175,7 @@ GameObject:
   - component: {fileID: 3013738665773567416}
   - component: {fileID: 3013738665773567417}
   m_Layer: 0
-  m_Name: Tree_iron
+  m_Name: Tree
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -209,7 +209,7 @@ Animator:
   m_GameObject: {fileID: 3013738665773567422}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4fe8b346dc6eb3c48abf400525935350, type: 2}
+  m_Controller: {fileID: 9100000, guid: 19190069a375dae4d98fde52ef95540e, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

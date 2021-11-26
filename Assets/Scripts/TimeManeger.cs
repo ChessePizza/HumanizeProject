@@ -21,8 +21,6 @@ public class TimeManeger : MonoBehaviour
         Minute = time.y;
         Hour = time.x;
         timer = minuteToRealTime;
-
-
     }
 
     private void Update()
@@ -37,6 +35,10 @@ public class TimeManeger : MonoBehaviour
                 Hour++;
                 Minute = 0;
                 OnHourChanged?.Invoke();
+            }
+            if (Hour >= 24)
+            {
+                Hour = 0;
             }
             timer = minuteToRealTime;
         }

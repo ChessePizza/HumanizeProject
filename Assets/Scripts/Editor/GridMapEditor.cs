@@ -110,10 +110,10 @@ public class GridMapEditor : Editor
         Sprite sprite = grid.level.GetComponentInParent<SpriteRenderer>().sprite;
         Rect rect = sprite.rect;
         // คำนวนหาขนาดของ Texture ของ Grid
-        Vector2Int size = new Vector2Int((int)(rect.width * grid.ratio), (int)(rect.height * grid.ratio));
+        Vector2 size = new Vector2(rect.width * grid.ratio, rect.height * grid.ratio);
 
         // สร้าง Texture2D
-        Texture2D image = new Texture2D(size.x, size.y, TextureFormat.ARGB32, false);
+        Texture2D image = new Texture2D((int)size.x, (int)size.y, TextureFormat.ARGB32, false);
         image.name = "GridImage";
 
         // ทำให้รูปเป็นโปร่งใสทั้งหมด
@@ -165,7 +165,7 @@ public class GridMapEditor : Editor
                 }
                 for (int i = 0; i < grid.borderSize * 2; i++)
                 {
-                    image.SetPixel(px, size.y - i, grid.color);
+                    image.SetPixel(px, (int)size.y - i, grid.color);
                 }
             }
 
@@ -178,14 +178,14 @@ public class GridMapEditor : Editor
                 }
                 for (int i = 0; i < grid.borderSize * 2; i++)
                 {
-                    image.SetPixel(size.x - i, py, grid.color);
+                    image.SetPixel((int)size.x - i, py, grid.color);
                 }
             }
         }
         image.Apply();
 
         // ใส่ Sprite ใน Sprite Renderer
-        Sprite spriteTexture = Sprite.Create(image, new Rect(0, 0, size.x, size.y), new Vector2(0.5f, 0.5f), 100, 0, SpriteMeshType.FullRect);
+        Sprite spriteTexture = Sprite.Create(image, new Rect(0, 0, (int)size.x, (int)size.y), new Vector2(0.5f, 0.5f), 100, 0, SpriteMeshType.FullRect);
         spriteTexture.name = "GridMap";
         grid.gameObject.GetComponent<SpriteRenderer>().sprite = spriteTexture;
 

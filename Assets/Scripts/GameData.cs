@@ -10,7 +10,8 @@ public enum ItemType
     keylock = 1,
     screw = 2,
     sheet = 3,
-    special = 4
+    battery = 4,
+    special = 5
 }
 
 public enum BuildingType

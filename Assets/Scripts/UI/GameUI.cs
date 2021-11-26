@@ -28,11 +28,13 @@ public class GameUI : MonoBehaviour
 
     public Text pauseText;
     public Text timer;
+    public Text killCountText;
 
     public Image inventoryButton;
     public Image buildcategoryButton;
 
     public GameData data;
+    Gameplay gameplay;
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +46,8 @@ public class GameUI : MonoBehaviour
             if (!data.sfx.isPlaying) data.sfx.Play();
         }
         StartTimer();
+
+        gameplay = GetComponent<Gameplay>();
     }
 
     // Update is called once per frame
@@ -94,7 +98,6 @@ public class GameUI : MonoBehaviour
         inventoryButton.color = Color.white;
         buildcategoryButton.color = new Color(0.25f, 0.25f, 0.25f, 1.0f);
 
-        Gameplay gameplay = GetComponent<Gameplay>();
         gameplay.changeMode(Gameplay.GameMode.Scout);
         gameplay.grid.gameObject.SetActive(false);
     }
@@ -105,7 +108,6 @@ public class GameUI : MonoBehaviour
         inventoryButton.color = new Color(0.45f, 0.45f, 0.45f, 1.0f);
         buildcategoryButton.color = Color.white;
 
-        Gameplay gameplay = GetComponent<Gameplay>();
         gameplay.changeMode(Gameplay.GameMode.Build);
         UpdatePassability();
         gameplay.grid.gameObject.SetActive(true);
@@ -113,7 +115,6 @@ public class GameUI : MonoBehaviour
 
     public void UpdatePassability()
     {
-        Gameplay gameplay = GetComponent<Gameplay>();
         bool needRescan = false;
         for (int x = 0; x < gameplay.grid.size.x; x++)
             for (int y = 0; y < gameplay.grid.size.y; y++)
@@ -123,7 +124,7 @@ public class GameUI : MonoBehaviour
                 {
                     if (!gameplay.grid.transform.Find("impassable_" + x + "_" + y))
                     {
-                        GameObject o = Instantiate(impassable, new Vector3(0,0,0), Quaternion.identity);
+                        GameObject o = Instantiate(impassable, new Vector3(0, 0, 0), Quaternion.identity);
                         o.name = "impassable_" + x + "_" + y;
                         if (value == 2)
                         {
@@ -136,6 +137,11 @@ public class GameUI : MonoBehaviour
                             1.0f);
                         o.transform.SetParent(gameplay.grid.transform);
                     }
+                }
+                else 
+                {
+                    Transform cell = gameplay.grid.transform.Find("impassable_" + x + "_" + y);
+                    if (cell != null) Destroy(cell.gameObject);
                 }
             }
 
@@ -175,7 +181,7 @@ public class GameUI : MonoBehaviour
         description.text = item.building.description;
 
         Button button = buildInfoUI.transform.Find("Info/BuildButton").GetComponent<Button>();
-        button.onClick.AddListener(() => GetComponent<Gameplay>().build(item.building));
+        button.onClick.AddListener(() => gameplay.build(item.building));
 
         backgroundUI.SetActive(true);
     }
