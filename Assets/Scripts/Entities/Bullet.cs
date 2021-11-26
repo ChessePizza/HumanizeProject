@@ -11,6 +11,8 @@ public class Bullet : MonoBehaviour
     private int durability;
     private Building owner;
 
+    float angle;
+
     Rigidbody2D rb;
 
     // Start is called before the first frame update
@@ -22,18 +24,19 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (target)
+        if (owner.bulletType == BulletType.misslie && target)
         {
-            if (owner.bulletType == Building.BulletType.misslie)
-            {
-                Vector2 direction = (Vector2)target.position - rb.position;
-                direction.Normalize();
+            Vector2 direction = (Vector2)target.position - rb.position;
+            direction.Normalize();
 
-                float rotateAmount = Vector3.Cross(direction, transform.up).z;
-                rb.angularVelocity = -rotateAmount * missileRotateSpeed;
-            }
-            rb.velocity = transform.up * owner.bulletSpeed;
+            float rotateAmount = Vector3.Cross(direction, transform.up).z;
+            rb.angularVelocity = -rotateAmount * missileRotateSpeed;
         }
+        if (owner.bulletType == BulletType.normal || owner.bulletType == BulletType.surround)
+        {
+            rb.MoveRotation(angle);
+        }
+        rb.velocity = transform.up * owner.bulletSpeed;
     }
 
 	public void Update()
@@ -50,13 +53,12 @@ public class Bullet : MonoBehaviour
     {
         if (trig.gameObject.tag == "Enemy")
         {
-            if (owner.bulletType == Building.BulletType.misslie)
+            if (owner.bulletType == BulletType.misslie)
             {
                 if (target && trig.gameObject.name == target.name) Break();
             }
             else
             {
-
                 target = trig.transform;
                 Break();
             }
@@ -70,16 +72,38 @@ public class Bullet : MonoBehaviour
 
         owner.bulletCount--;
 
-        Health targetHealth = target.GetComponent<Health>();
-        targetHealth.SetHealth(targetHealth.currentHealth - owner.bulletDamage);
+        if (target)
+        {
+            Health targetHealth = target.GetComponent<Health>();
+            targetHealth.SetHealth(targetHealth.currentHealth - owner.bulletDamage);
+        }
         Destroy(this.gameObject);
     }
 
     public void Setup(Building owner, Transform target)
     {
+        rb = GetComponent<Rigidbody2D>();
         this.owner = owner;
         this.durability = owner.bulletDurability;
 
-        if(target) this.target = target;
+        if (target)
+        {
+            this.target = target;
+
+            if (owner || owner.bulletType == BulletType.normal)
+            {
+                Vector2 originPos = transform.position;
+                Vector2 targetPos = target.transform.position;
+
+                Vector2 direction = targetPos - originPos;
+
+                angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90.0f;
+            }
+        }
+    }
+
+    public void SetAngle(float angle)
+    {
+        this.angle = angle;
     }
 }

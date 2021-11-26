@@ -30,7 +30,6 @@ public class Fulfillment : MonoBehaviour
         {
             sprites[i].color = color;
         }
-        Fulfill(); //Test Only
     }
 
     // Update is called once per frame

@@ -1,16 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+public enum BulletType
+{
+    normal = 0,
+    misslie = 1,
+    surround = 2,
+    ultimate = 3
+}
 
 public class Building : MonoBehaviour
 {
-    public enum BulletType
-    {
-        normal = 0,
-        misslie = 1,
-        surround = 2,
-        ultimate = 3
-    }
 
     public string title;
     public string description;
@@ -55,16 +55,38 @@ public class Building : MonoBehaviour
 
             if (bulletCount < 0) bulletCount = 0;
             timer = Mathf.Clamp(timer, 0, cooldown);
-            Debug.Log("Target:" + targets.Count);
+            
             if (targets.Count > 0 && timer == 0)
             {
-                GameObject entity = Instantiate(bullet.gameObject, spawner.position, Quaternion.identity);
-                Bullet entityBullet = entity.GetComponent<Bullet>();
-                entity.transform.SetParent(this.transform);
-                bulletCount++;
-                timer = cooldown;
+                if (bulletType == BulletType.misslie || bulletType == BulletType.normal)
+                {
+                    for (int i = 0; i < targets.Count; i++)
+                    {
+                        GameObject entity = Instantiate(bullet.gameObject, spawner.position, Quaternion.identity);
+                        Bullet entityBullet = entity.GetComponent<Bullet>();
+                        entity.transform.SetParent(this.transform);
+                        bulletCount++;
+                        timer = cooldown;
 
-                entityBullet.Setup(this, targets[0].transform);
+                        entityBullet.Setup(this, targets[i].transform);
+                    }
+                }
+                else
+                {
+                    float angle = 0;
+                    for (int i = 0; i < 8; i++)
+                    {
+                        GameObject entity = Instantiate(bullet.gameObject, spawner.position, Quaternion.identity);
+                        Bullet entityBullet = entity.GetComponent<Bullet>();
+                        entity.transform.SetParent(this.transform);
+                        bulletCount++;
+                        timer = cooldown;
+
+                        entityBullet.Setup(this, null);
+                        entityBullet.SetAngle(angle);
+                        angle += 45;
+                    }
+                }
             }
             else if(timer > 0)
             {
@@ -77,7 +99,11 @@ public class Building : MonoBehaviour
     {
         if (trig.gameObject.tag == "Enemy" && isReady)
         {
-            targets.Add(trig.gameObject);
+            int targetIndex = FindTarget(trig.gameObject.name);
+            if (targetIndex < 0)
+            {
+                targets.Add(trig.gameObject);
+            }
         }
     }
 
