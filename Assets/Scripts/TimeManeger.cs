@@ -5,21 +5,21 @@ using System;
 
 public class TimeManeger : MonoBehaviour
 {
+    public int hours;
+    public int minutes;
     public static Action OnMinuteChanged;
     public static Action OnHourChanged;
 
-    public static int Minute { get; private set; }
-    public static int Hour { get; private set; }
+    public static int Minute { get; set; }
+    public static int Hour { get; set; }
 
     private float minuteToRealTime = 0.5f;
     private float timer;
 
-    public Vector2Int time; 
-
     private void Start()
     {
-        Minute = time.y;
-        Hour = time.x;
+        Minute = 0;
+        Hour = 15;
         timer = minuteToRealTime;
     }
 

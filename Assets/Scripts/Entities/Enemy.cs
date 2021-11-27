@@ -61,6 +61,7 @@ public class Enemy : MonoBehaviour
             if (health.currentHealth > 0)
             {
                 health.SetHealth(health.currentHealth - AttackDamage);
+                Camera.main.GetComponent<Gameplay>().showWarning();
             }
             else
             {

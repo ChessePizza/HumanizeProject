@@ -7,7 +7,13 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Gameplay))]
 public class GameUI : MonoBehaviour
 {
+    public string levelName;
+    public string levelDescription;
+
     public GameObject inventoryUI;
+    public GameObject statusUI;
+    public GameObject joystickUI;
+    public GameObject zoomSliderUI;
     public GameObject buildcategoryUI;
     public GameObject pauseUI;
     public GameObject buildInfoUI;
@@ -26,6 +32,8 @@ public class GameUI : MonoBehaviour
     public GameObject impassable;
     public Vector2 impassableAdjust;
 
+    public Text announceTitleText;
+    public Text announceSubText;
     public Text pauseText;
     public Text timer;
     public Text killCountText;
@@ -45,7 +53,6 @@ public class GameUI : MonoBehaviour
             if (!data.bgm.isPlaying) data.bgm.Play();
             if (!data.sfx.isPlaying) data.sfx.Play();
         }
-        StartTimer();
 
         gameplay = GetComponent<Gameplay>();
     }
@@ -55,20 +62,71 @@ public class GameUI : MonoBehaviour
     {
         
     }
-    
+
+    // Game State UI
+
+    public void Announce(string title, string description)
+    {
+        announceTitleText.text = title;
+        announceSubText.text = description;
+        Animator anim = announceTitleText.GetComponent<Animator>();
+        if (anim.GetBool("rerun")) anim.SetBool("rerun", false);
+        anim.SetBool("start", true);
+        anim.Play("Start");
+    }
+
+    public void HideAll()
+    {
+        inventoryUI.SetActive(false);
+        statusUI.SetActive(false);
+        joystickUI.SetActive(false);
+        zoomSliderUI.SetActive(false);
+        buildcategoryUI.SetActive(false);
+        pauseUI.SetActive(false);
+        buildInfoUI.SetActive(false);
+        buildConfirmationUI.SetActive(false);
+        settingsUI.SetActive(false);
+        menuListUI.SetActive(false);
+        goalUI.SetActive(false);
+        backgroundUI.SetActive(false);
+        screenshotUI.SetActive(false);
+        menuTab.SetActive(false);
+        goalButton.SetActive(false);
+        settingsButton.SetActive(false);
+        buildConfirmButton.SetActive(false);
+    }
+
+    public void ShowAll()
+    {
+        inventoryUI.SetActive(true);
+        statusUI.SetActive(true);
+        joystickUI.SetActive(true);
+        zoomSliderUI.SetActive(true);
+        menuListUI.SetActive(true);
+        menuTab.SetActive(true);
+        goalButton.SetActive(true);
+        settingsButton.SetActive(true);
+    }
+
     // Timer
-    private void StartTimer()
+    public void SetTimer(int hour, int minute)
+    {
+        TimeManeger.Hour = hour;
+        TimeManeger.Minute = minute;
+    }
+
+    public void StartTimer()
     {
         TimeManeger.OnMinuteChanged += UpdateTimer;
         TimeManeger.OnHourChanged += UpdateTimer;
     }
 
-    private void StopTimer()
+    public void StopTimer()
     {
         TimeManeger.OnMinuteChanged -= UpdateTimer;
         TimeManeger.OnHourChanged -= UpdateTimer;
     }
-    private void UpdateTimer()
+    public void UpdateTimer()
     {
         timer.text = $"{TimeManeger.Hour:00}:{TimeManeger.Minute:00}";
     }

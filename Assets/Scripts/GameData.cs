@@ -11,7 +11,8 @@ public enum ItemType
     screw = 2,
     sheet = 3,
     battery = 4,
-    special = 5
+    bomb = 5,
+    paper = 6
 }
 
 public enum BuildingType
@@ -33,6 +34,10 @@ public class GameData : MonoBehaviour
     public AudioMixer audioMixer;
     public AudioSource bgm;
     public AudioSource sfx;
+
+    bool backFromLevel = false;
+
+    public int level = 0;
     void Start()
     {
         DontDestroyOnLoad(this.gameObject);

@@ -44,6 +44,7 @@ public class Building : MonoBehaviour
     {
         targets = new List<GameObject>();
         health = GetComponent<Health>();
+        health.SetMaxHealth(durability);
     }
 
     // Update is called once per frame
@@ -60,7 +61,7 @@ public class Building : MonoBehaviour
             {
                 if (bulletType == BulletType.misslie || bulletType == BulletType.normal)
                 {
-                    for (int i = 0; i < targets.Count; i++)
+                    if(targets.Count > 0)
                     {
                         GameObject entity = Instantiate(bullet.gameObject, spawner.position, Quaternion.identity);
                         Bullet entityBullet = entity.GetComponent<Bullet>();
@@ -68,7 +69,7 @@ public class Building : MonoBehaviour
                         bulletCount++;
                         timer = cooldown;
 
-                        entityBullet.Setup(this, targets[i].transform);
+                        entityBullet.Setup(this, targets[0].transform);
                     }
                 }
                 else
