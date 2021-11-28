@@ -76,7 +76,6 @@ public class Fulfillment : MonoBehaviour
         {
             sprites[i].color = Color.white;
         }
-        
         building.gameObject.GetComponent<BoxCollider2D>().enabled = true;
         building.gameObject.GetComponent<CircleCollider2D>().enabled = true;
         building.transform.Find("Health").gameObject.SetActive(true);
@@ -85,6 +84,7 @@ public class Fulfillment : MonoBehaviour
         health.SetMaxHealth(building.durability);
 
         building.isReady = true;
+        gameplay.isSuccessfullyBuildOnce = true;
         Destroy(this.gameObject);
     }
 

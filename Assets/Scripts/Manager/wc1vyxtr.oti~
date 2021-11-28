@@ -1,0 +1,269 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class QuestManager : MonoBehaviour
+{
+    GameUI gameUI;
+    Gameplay gameplay;
+    CameraController cam;
+
+    [Header("Quest")]
+    public Text levelTitle;
+    public Text Quest1Text;
+    public Text Quest2Text;
+    public Text Quest3Text;
+    public Image Quest1Icon;
+    public Image Quest2Icon;
+    public Image Quest3Icon;
+
+    [Header("Dialog")]
+    public GameObject dialogUI;
+    public Text title;
+    public Text message;
+
+    [Header("Sprite")]
+    public GameObject kid;
+    public GameObject player;
+    public Sprite checkSprite;
+    public Sprite uncheckSprite;
+
+    [Header("Buttons")]
+    public Button next;
+    public Button skip;
+    public Button choice1;
+    public Button choice2;
+
+    [Header("Data")]
+    public bool isReady = false;
+
+    float camPosTime;
+    float zoomTime;
+    float originZoom;
+    float targetZoom;
+    float camPosDuration;
+    float zoomDuration;
+    Vector2 originCamPos;
+    Vector2 targetCamPos;
+
+    int questState = 0; // Objectives
+    int questProgress = 0; // 0 = start, 1 = inquest, 2 = finish
+    int dialogState = 0; // Page
+    int state = 0;
+
+    bool isUpdatable = true;
+
+    bool[] questResult = new bool[3];
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        questResult = new bool[3];
+        isUpdatable = true;
+        questState = 0;
+        questProgress = 0;
+        dialogState = 0;
+        state = 0;
+
+        camPosTime = 0;
+        zoomTime = 0;
+        camPosDuration = 5;
+        zoomDuration = 5;
+
+        gameplay = Camera.main.GetComponent<Gameplay>();
+        gameUI = Camera.main.GetComponent<GameUI>();
+        cam = Camera.main.GetComponent<CameraController>();
+        isReady = false;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        // Update Camera Lerp
+        if (cam.forceMode)
+        {
+            if (camPosTime < 1 && originCamPos != targetCamPos)
+            {
+                camPosTime += Time.deltaTime / camPosDuration;
+            }
+            if (zoomTime < 1 && originZoom != targetZoom)
+            {
+                zoomTime += Time.deltaTime / zoomDuration;
+            }
+            cam.forcePosition = Vector2.Lerp(originCamPos, targetCamPos, camPosTime);
+            cam.forceZoomValue = Mathf.Lerp(originZoom, targetZoom, zoomTime);
+        }
+
+        // Update Quest
+        if (isReady && isUpdatable) {
+            switch (gameplay.levelId)
+            {
+                case 0: StartCoroutine(UpdateRoute1()); break;
+                case 1: break;
+                case 2: break;
+                default: break;
+            }
+        }
+    }
+
+    IEnumerator UpdateRoute1()
+    {
+        isUpdatable = false;
+        if (questState == 0) 
+        {
+            if (questProgress == 0)
+            {
+                if (dialogState == 0)
+                {
+                    ClearQuest();
+                    SetCamera(new Vector2(0.24f, -1.37f), 0.75f);
+                    yield return new WaitForSeconds(2);
+                    dialogState++;
+                }
+            }
+        }
+        isUpdatable = true;
+        yield return null;
+    }
+
+    public void Next()
+    {
+        dialogState++;
+    }
+
+    public void Skip()
+    {
+        if (gameplay.levelId)
+        {
+            if (questState == 0)
+            {
+                if (questProgress == 0)
+                {
+
+                }
+            }
+        }
+    }
+
+	void ShowDialog(string text, bool isPlayer)
+    {
+        if (isPlayer)
+        {
+            title.text = "Kid";
+            kid.SetActive(true);
+            player.SetActive(false);
+        }
+        else
+        {
+            title.text = "Robot";
+            kid.SetActive(false);
+            player.SetActive(true);
+        }
+        message.text = text;
+        next.gameObject.SetActive(true);
+        choice1.gameObject.SetActive(false);
+        choice2.gameObject.SetActive(false);
+        dialogUI.SetActive(true);
+    }
+    void ShowChoice(string text1, string text2)
+    {
+        choice1.transform.Find("Text").GetComponent<Text>().text = text1;
+        choice2.transform.Find("Text").GetComponent<Text>().text = text2;
+
+        next.gameObject.SetActive(false);
+        choice1.gameObject.SetActive(true);
+        choice2.gameObject.SetActive(true);
+    }
+
+    void ShowSingleChoice(string text)
+    {
+        choice2.transform.Find("Text").GetComponent<Text>().text = text;
+
+        next.gameObject.SetActive(false);
+        choice1.gameObject.SetActive(false);
+        choice2.gameObject.SetActive(true);
+    }
+
+    void ClearQuest()
+    {
+        Quest1Icon.sprite = uncheckSprite;
+        Quest2Icon.sprite = uncheckSprite;
+        Quest3Icon.sprite = uncheckSprite;
+        Quest1Text.gameObject.SetActive(false);
+        Quest1Text.gameObject.SetActive(false);
+        Quest1Text.gameObject.SetActive(false);
+    }
+
+    void SetQuest1(string text, bool check)
+    {
+        if (check)
+        {
+            Quest1Icon.sprite = checkSprite;
+            questResult[0] = true;
+        }
+        else
+        {
+            Quest1Icon.sprite = uncheckSprite;
+            questResult[0] = false;
+        }
+        Quest1Text.gameObject.SetActive(true);
+        Quest1Icon.gameObject.SetActive(true);
+    }
+    void SetQuest2(string text, bool check)
+    {
+        if (check)
+        {
+            Quest2Icon.sprite = checkSprite;
+            questResult[1] = true;
+        }
+        else
+        {
+            Quest2Icon.sprite = uncheckSprite;
+            questResult[1] = false;
+        }
+        Quest2Text.gameObject.SetActive(true);
+        Quest2Icon.gameObject.SetActive(true);
+    }
+    void SetQuest3(string text, bool check)
+    {
+        if (check)
+        {
+            Quest3Icon.sprite = checkSprite;
+            questResult[2] = true;
+        }
+        else
+        {
+            Quest3Icon.sprite = uncheckSprite;
+            questResult[2] = false;
+        }
+        Quest3Text.gameObject.SetActive(true);
+        Quest3Icon.gameObject.SetActive(true);
+    }
+
+    void SetCamera(Vector2 position, float zoom)
+    {
+        originCamPos = cam.forcePosition;
+        originZoom = cam.zoom.value;
+        targetZoom = zoom;
+        targetCamPos = position;
+        cam.forceMode = true;
+    }
+
+    public void ResetRoute()
+    {
+        questState = 0;
+        questProgress = 0;
+        dialogState = 0;
+    }
+
+    IEnumerator StartGame()
+    {
+        gameplay.InitState(GameState.Prepare);
+        yield return new WaitForSeconds(2);
+        gameUI.ShowAll();
+        yield return new WaitForSeconds(2);
+        gameUI.SetTimer(gameplay.startTime.x, gameplay.startTime.y);
+        gameUI.StartTimer();
+    }
+}

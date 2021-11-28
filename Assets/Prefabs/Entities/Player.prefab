@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2951426686427106489}
   - component: {fileID: 2951426686427106488}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: New Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,6 +46,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -92,7 +93,7 @@ GameObject:
   - component: {fileID: 172949342634300910}
   - component: {fileID: 1896107355004125784}
   - component: {fileID: 6257008802201441995}
-  m_Layer: 11
+  m_Layer: 7
   m_Name: BodyLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +179,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4858908472077052923}
   - component: {fileID: 4858908472077052922}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -219,6 +220,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -265,7 +267,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4858908472166350552}
   - component: {fileID: 4858908472166350555}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: mainchar0_12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -302,6 +304,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -348,7 +351,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4858908472332150960}
   - component: {fileID: 4858908472332150963}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: Hood2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -384,6 +387,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -430,7 +434,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4858908472415721820}
   - component: {fileID: 4858908472415721823}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: mainchar0_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -466,6 +470,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -512,7 +517,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4858908472573305494}
   - component: {fileID: 4858908472573305497}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: mainchar0_13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -549,6 +554,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -594,7 +600,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4858908472758291638}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: Legr
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -626,7 +632,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4858908473093157184}
   - component: {fileID: 4858908473093157187}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: mainchar0_9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -662,6 +668,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -707,7 +714,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4858908473113015239}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: HandR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -739,7 +746,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4858908473159697473}
   - component: {fileID: 4858908473159697472}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: mainchar0_8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -776,6 +783,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -822,7 +830,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4858908473175576359}
   - component: {fileID: 4858908473175576358}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: Eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -858,6 +866,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -904,7 +913,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4858908473196401932}
   - component: {fileID: 4858908473196401935}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: mainchar0_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -941,6 +950,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -991,7 +1001,7 @@ GameObject:
   - component: {fileID: 4858908473210816406}
   - component: {fileID: 6736132748151203605}
   - component: {fileID: 7566840419999727826}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1136,7 +1146,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4858908473221544532}
   - component: {fileID: 4858908473221544535}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: mainchar0_15
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1172,6 +1182,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1218,7 +1229,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4858908473364353519}
   - component: {fileID: 4858908473364353518}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: mainchar0_11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1255,6 +1266,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1301,7 +1313,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4858908473499482072}
   - component: {fileID: 4858908473499482075}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: mainchar0_16
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1337,6 +1349,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1382,7 +1395,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4858908473507700083}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: HacdL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1414,7 +1427,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4858908473599376639}
   - component: {fileID: 4858908473599376638}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: Hood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1450,6 +1463,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1496,7 +1510,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4858908473679679385}
   - component: {fileID: 4858908473679679384}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: mainchar0_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1533,6 +1547,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1578,7 +1593,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4858908473809350606}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: Legl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1610,7 +1625,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4858908473846604067}
   - component: {fileID: 4858908473846604066}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: Face
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1649,6 +1664,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1695,7 +1711,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4858908473915092972}
   - component: {fileID: 4858908473915092975}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: mainchar0_7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1732,6 +1748,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1778,7 +1795,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4858908474075463252}
   - component: {fileID: 4858908474075463255}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: mainchar0_14
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1815,6 +1832,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1862,7 +1880,7 @@ GameObject:
   - component: {fileID: 561690504840933658}
   - component: {fileID: 7932529556344629495}
   - component: {fileID: 3715844312279825407}
-  m_Layer: 11
+  m_Layer: 7
   m_Name: EyeLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}

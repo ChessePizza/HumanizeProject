@@ -7,9 +7,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Gameplay))]
 public class GameUI : MonoBehaviour
 {
-    public string levelName;
-    public string levelDescription;
-
+    [Header("User Interface")]
     public GameObject inventoryUI;
     public GameObject statusUI;
     public GameObject joystickUI;
@@ -23,35 +21,60 @@ public class GameUI : MonoBehaviour
     public GameObject goalUI;
     public GameObject backgroundUI;
     public GameObject screenshotUI;
+    public GameObject endUI;
+    public GameObject menuTab;    
 
-    public GameObject menuTab;
+    [Header("Buttons")]
     public GameObject goalButton;
     public GameObject settingsButton;
     public GameObject buildConfirmButton;
+    public GameObject removeButton;
 
+    [Header("Sprite")]
+    public Sprite gameOverSprite;
+    public Sprite gameWinSprite;
+
+    [Header("Grid UI")]
     public GameObject impassable;
     public Vector2 impassableAdjust;
 
+    [Header("Text")]
     public Text announceTitleText;
     public Text announceSubText;
     public Text pauseText;
     public Text timer;
     public Text killCountText;
+    public Text endTitle;
+    public Text endInfo;
 
+    [Header("Images")]
+    public Image warning;
+    public Image endIcon;
     public Image inventoryButton;
     public Image buildcategoryButton;
 
+    [Header("References")]
     public GameData data;
     Gameplay gameplay;
+
+    public bool isRealEnd = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        isRealEnd = false;
         if (GameObject.Find("Data"))
         {
             data = GameObject.Find("Data").GetComponent<GameData>();
             if (!data.bgm.isPlaying) data.bgm.Play();
             if (!data.sfx.isPlaying) data.sfx.Play();
+
+            if (PlayerPrefs.GetInt("everSettings") > 0)
+            {
+                data.audioMixer.SetFloat("MainVolumePara", PlayerPrefs.GetFloat("MainVolumePara"));
+                data.audioMixer.SetFloat("MusicVolumePara", PlayerPrefs.GetFloat("MusicVolumePara"));
+                data.audioMixer.SetFloat("EffectVolumePara", PlayerPrefs.GetFloat("EffectVolumePara"));
+            }
         }
 
         gameplay = GetComponent<Gameplay>();
@@ -61,6 +84,35 @@ public class GameUI : MonoBehaviour
     void Update()
     {
         
+    }
+
+    // Game End UI
+
+    public void SetGameEnd(string title, string description, bool isGameOver)
+    {
+        endTitle.text = title;
+        endIcon.sprite = (isGameOver) ? gameOverSprite : gameWinSprite;
+        endInfo.text = description;
+    }
+
+    // Warning UI
+    bool isWarning;
+    public void showWarning()
+    {
+        warning.gameObject.SetActive(true);
+        if (!isWarning)
+        {
+            StartCoroutine(EndWarning());
+        }
+    }
+
+    IEnumerator EndWarning()
+    {
+        isWarning = true;
+        yield return new WaitForSeconds(7);
+        warning.gameObject.SetActive(false);
+        isWarning = false;
+        yield return null;
     }
 
     // Game State UI
@@ -94,6 +146,7 @@ public class GameUI : MonoBehaviour
         goalButton.SetActive(false);
         settingsButton.SetActive(false);
         buildConfirmButton.SetActive(false);
+        removeButton.SetActive(false);
     }
 
     public void ShowAll()
@@ -106,6 +159,7 @@ public class GameUI : MonoBehaviour
         menuTab.SetActive(true);
         goalButton.SetActive(true);
         settingsButton.SetActive(true);
+        removeButton.SetActive(true);
     }
 
     // Timer
@@ -135,22 +189,26 @@ public class GameUI : MonoBehaviour
     public void SetVolume(float volume)
     {
         data.audioMixer.SetFloat("MainVolumePara", volume);
+        PlayerPrefs.SetFloat("MainVolumePara", volume);
     }
 
     public void SetMusicVolume(float musicVolume)
     {
         data.audioMixer.SetFloat("MusicVolumePara", musicVolume);
+        PlayerPrefs.SetFloat("MusicVolumePara", musicVolume);
     }
 
     public void SetEffectVolume(float effectVolume)
     {
         data.audioMixer.SetFloat("EffectVolumePara", effectVolume);
+        PlayerPrefs.SetFloat("EffectVolumePara", effectVolume);
     }
 
     // Navigation Functions
 
     public void SwitchToInventory()
     {
+        removeButton.SetActive(true);
         buildcategoryUI.SetActive(false);
         inventoryUI.SetActive(true);
         inventoryButton.color = Color.white;
@@ -161,6 +219,7 @@ public class GameUI : MonoBehaviour
     }
     public void SwitchToBuildCategory()
     {
+        removeButton.SetActive(false);
         buildcategoryUI.SetActive(true);
         inventoryUI.SetActive(false);
         inventoryButton.color = new Color(0.45f, 0.45f, 0.45f, 1.0f);
@@ -252,6 +311,7 @@ public class GameUI : MonoBehaviour
     public void OpenBuildConfirmation()
     {
         buildConfirmationUI.SetActive(true);
+        removeButton.SetActive(false);
         inventoryUI.SetActive(false);
         buildcategoryUI.SetActive(false);
         menuTab.SetActive(false);
@@ -261,6 +321,7 @@ public class GameUI : MonoBehaviour
     public void CloseBuildConfirmation()
     {
         buildConfirmationUI.SetActive(false);
+        removeButton.SetActive(false);
         inventoryUI.SetActive(false);
         buildcategoryUI.SetActive(true);
         menuTab.SetActive(true);
@@ -283,10 +344,19 @@ public class GameUI : MonoBehaviour
     // System
     IEnumerator LoadLevelAsync()
     {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Scenes/Main", LoadSceneMode.Single);
+        AsyncOperation asyncLoad;
+        if (gameplay.levelId == 1 && isRealEnd)
+        {
+            asyncLoad = SceneManager.LoadSceneAsync("Scenes/CutsceneEpilogue", LoadSceneMode.Single);
+        }
+        else
+        {
+            asyncLoad = SceneManager.LoadSceneAsync("Scenes/Main", LoadSceneMode.Single);
+        }
 
         while (!asyncLoad.isDone)
         {
+            data.backFromLevel = true;
             yield return null;
         }
     }

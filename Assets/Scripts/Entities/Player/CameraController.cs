@@ -9,12 +9,20 @@ public class CameraController : MonoBehaviour
     public SpriteRenderer map;
     public Slider zoom;
 
+    [Header("Data")]
+    public bool forceMode = false;
+    public float forceZoomValue;
+    public float preForceZoomValue;
+    public Vector2 forcePosition;
+    public Vector2 preForcePosition;
+
     Vector2 minValue;
     Vector2 maxValue;
     public Vector2 magicNumber; // Default: 2.0f,1.6f
 
     void Start()
     {
+        forceMode = false;
         if (map)
         {
             Vector2 pivot = map.gameObject.GetComponent<RectTransform>().pivot;
@@ -41,7 +49,14 @@ public class CameraController : MonoBehaviour
         if (zoom)
         {
             // orthographic size จะมีค่าเริ่มต้นเป็น 4.0f
-            Camera.main.orthographicSize = 4.0f + zoom.value;
+            float zoomValue = forceZoomValue;
+            if (!forceMode)
+            {
+                zoomValue = zoom.value;
+                forceZoomValue = zoomValue;
+                preForceZoomValue = zoomValue;
+            }
+            Camera.main.orthographicSize = 4.0f + zoomValue;
 
             if (map)
             {
@@ -54,13 +69,18 @@ public class CameraController : MonoBehaviour
                 Vector2 _minValue = minValue - (minValue / clampRatio);
                 Vector2 _maxValue = maxValue - (maxValue / clampRatio);
 
-                if (player)
+                Vector2 targetPosition = forcePosition;
+                if (player && !forceMode)
                 {
-                    Camera.main.transform.position = new Vector3(
-                        Mathf.Clamp(player.transform.position.x, _minValue.x, _maxValue.x),
-                        Mathf.Clamp(player.transform.position.y, _minValue.y, _maxValue.y),
-                        Camera.main.transform.position.z);
+                    targetPosition = player.transform.position;
+                    forcePosition = targetPosition;
+                    preForcePosition = targetPosition;
                 }
+
+                Camera.main.transform.position = new Vector3(
+                    Mathf.Clamp(targetPosition.x, _minValue.x, _maxValue.x),
+                    Mathf.Clamp(targetPosition.y, _minValue.y, _maxValue.y),
+                    Camera.main.transform.position.z);
             }
         }
     }

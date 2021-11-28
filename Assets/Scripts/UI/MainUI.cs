@@ -24,6 +24,41 @@ public class MainUI : MonoBehaviour
         }
         if (!data.sfx.isPlaying) data.sfx.Play();
         if (!data.bgm.isPlaying) data.bgm.Play();
+
+        if (PlayerPrefs.GetInt("everSettings") > 0)
+        {
+            data.audioMixer.SetFloat("MainVolumePara", PlayerPrefs.GetFloat("MainVolumePara"));
+            data.audioMixer.SetFloat("MusicVolumePara", PlayerPrefs.GetFloat("MusicVolumePara"));
+            data.audioMixer.SetFloat("EffectVolumePara", PlayerPrefs.GetFloat("EffectVolumePara"));
+        }
+        else
+        {
+            PlayerPrefs.SetInt("everSettings", 1);
+            float mainVolumePara;
+            data.audioMixer.GetFloat("MainVolumePara", out mainVolumePara);
+            PlayerPrefs.SetFloat("MainVolumePara", mainVolumePara);
+
+            float musicVolumePara;
+            data.audioMixer.GetFloat("MusicVolumePara", out musicVolumePara);
+            PlayerPrefs.SetFloat("MusicVolumePara", musicVolumePara);
+
+            float effectVolumePara;
+            data.audioMixer.GetFloat("EffectVolumePara", out effectVolumePara);
+            PlayerPrefs.SetFloat("EffectVolumePara", effectVolumePara);
+        }
+
+        if (data.backFromLevel)
+        {
+            main_menu.SetActive(false);
+            settings_menu.SetActive(false);
+            level_menu.SetActive(true);
+        }
+        else
+        {
+            main_menu.SetActive(true);
+            settings_menu.SetActive(false);
+            level_menu.SetActive(false);
+        }
     }
 
     void Update()
@@ -35,16 +70,19 @@ public class MainUI : MonoBehaviour
     public void SetVolume(float volume)
     {
         if(data) data.audioMixer.SetFloat("MainVolumePara", volume);
+        PlayerPrefs.SetFloat("MainVolumePara", volume);
     }
 
     public void SetMusicVolume(float musicVolume)
     {
         if (data) data.audioMixer.SetFloat("MusicVolumePara", musicVolume);
+        PlayerPrefs.SetFloat("MusicVolumePara", musicVolume);
     }
 
     public void SetEffectVolume(float effectVolume)
     {
         if (data) data.audioMixer.SetFloat("EffectVolumePara", effectVolume);
+        PlayerPrefs.SetFloat("EffectVolumePara", effectVolume);
     }
 
     // Navigation Functions
@@ -74,13 +112,21 @@ public class MainUI : MonoBehaviour
 
     public void GotoLevel(int level)
     {
-        StartCoroutine(LoadLevelAsync());
+        StartCoroutine(LoadLevelAsync(level));
     }
 
     // System
-    IEnumerator LoadLevelAsync()
+    IEnumerator LoadLevelAsync(int level)
     {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Scenes/Level", LoadSceneMode.Single);
+        AsyncOperation asyncLoad;
+        if (level == 1)
+        {
+            asyncLoad = SceneManager.LoadSceneAsync("Scenes/CutscenePrologue", LoadSceneMode.Single);
+        }
+        else
+        {
+            asyncLoad = SceneManager.LoadSceneAsync("Scenes/Level2", LoadSceneMode.Single);
+        }
 
         while (!asyncLoad.isDone)
         {

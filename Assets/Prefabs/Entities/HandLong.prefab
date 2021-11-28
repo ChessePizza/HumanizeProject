@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7622515263659286136}
   - component: {fileID: 7622515263659286119}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Hand2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,6 +47,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -101,7 +102,7 @@ GameObject:
   - component: {fileID: -1166731083230457292}
   - component: {fileID: -1360885592622320919}
   - component: {fileID: 4965183071510585006}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: HandLong
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -289,7 +290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab787faf4058c1447a67bf7726f4ffb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackDamage: 100
+  AttackDamage: 50
 --- !u!114 &4965183071510585006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -333,7 +334,7 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  MaxHealth: 250
+  MaxHealth: 100
   currentHealth: 0
 --- !u!1 &7622515264265197954
 GameObject:
@@ -345,7 +346,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7622515264265197956}
   - component: {fileID: 7622515264265197955}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -382,6 +383,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -427,7 +429,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7622515264346397861}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: HandR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -459,7 +461,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7622515264584810775}
   - component: {fileID: 7622515264584810774}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bodymon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -498,6 +500,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -544,7 +547,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7622515264643480817}
   - component: {fileID: 7622515264643480816}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: HandLongEdit_8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -580,6 +583,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -626,7 +630,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7622515264786632195}
   - component: {fileID: 7622515264786632194}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: HandLongEdit_9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -663,6 +667,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -709,7 +714,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7622515264802702401}
   - component: {fileID: 7622515264802702400}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -746,6 +751,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -792,7 +798,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7622515264882723837}
   - component: {fileID: 7622515264882723836}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Hand3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -828,6 +834,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -874,7 +881,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7622515265034020151}
   - component: {fileID: 7622515265034020150}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Pak
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -910,6 +917,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -956,7 +964,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7622515265072335109}
   - component: {fileID: 7622515265072335108}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Call
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -993,6 +1001,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1038,7 +1047,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7622515265246718505}
   - component: {fileID: 7622515265246718504}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Hand2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1075,6 +1084,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1120,7 +1130,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7622515265326691028}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: HandL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1279,6 +1289,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Health
       objectReference: {fileID: 0}
+    - target: {fileID: 2795849546830822291, guid: bae6f94d7f83f7c459fecaa2e1416c25,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2795849547116198026, guid: bae6f94d7f83f7c459fecaa2e1416c25,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2795849547382665435, guid: bae6f94d7f83f7c459fecaa2e1416c25,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2795849547712194024, guid: bae6f94d7f83f7c459fecaa2e1416c25,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2795849547762247798, guid: bae6f94d7f83f7c459fecaa2e1416c25,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -1288,6 +1318,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2795849547762247799, guid: bae6f94d7f83f7c459fecaa2e1416c25,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2795849548159737435, guid: bae6f94d7f83f7c459fecaa2e1416c25,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2795849548341428242, guid: bae6f94d7f83f7c459fecaa2e1416c25,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2795849548764690583, guid: bae6f94d7f83f7c459fecaa2e1416c25,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bae6f94d7f83f7c459fecaa2e1416c25, type: 3}

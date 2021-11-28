@@ -6,19 +6,20 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
+public enum GameState
+{
+    Start = 0,
+    Prepare = 1,
+    Wave1 = 2,
+    Wave2 = 3,
+    Wave3 = 4,
+    End = 5,
+    GameOver = 6
+};
+
 [RequireComponent(typeof(GameUI))]
 public class Gameplay : MonoBehaviour
 {
-    public enum GameState
-    { 
-        Start = 0,
-        Prepare = 1,
-        Wave1 = 2,
-        Wave2 = 3,
-        Wave3 = 4,
-        End = 5,
-        GameOver = 6
-    };
 
     public enum GameMode 
     {
@@ -26,88 +27,47 @@ public class Gameplay : MonoBehaviour
         Build = 1
     };
 
-    public int level = 0;
-    public Health baseHealth;
+    [Header("Level Scene")]
+    public int levelId = 0;
+    public string levelName;
+    public string levelDescription;
 
-    public const int MAX_ENEMIES = 3;
-    public const int MAX_ITEMS = 5;
-    public int[] maxEnemiesSpawnPerTypeWave1 = new int[MAX_ENEMIES];
-    public int[] maxEnemiesSpawnPerTypeWave2 = new int[MAX_ENEMIES];
-    public int[] maxEnemiesSpawnPerTypeWave3 = new int[MAX_ENEMIES];
-    public int[] cooldownEnemiesSpawnPerTypeWave1 = new int[MAX_ENEMIES];
-    public int[] cooldownEnemiesSpawnPerTypeWave2 = new int[MAX_ENEMIES];
-    public int[] cooldownEnemiesSpawnPerTypeWave3 = new int[MAX_ENEMIES];
-
-    public GameObject[] Enemies = new GameObject[MAX_ENEMIES];
-    public GameObject[] Items = new GameObject[MAX_ITEMS];
-
-    public int maxItemSpawnPrepare;
-    public int maxItemSpawnWave1;
-    public int maxItemSpawnWave2;
-    public int maxItemSpawnWave3;
-    public int cooldownItemSpawnPrepare;
-    public int cooldownItemSpawnWave1;
-    public int cooldownItemSpawnWave2;
-    public int cooldownItemSpawnWave3;
-
-    int currentItem = 0;
-    int[] currentEnemies = new int[MAX_ENEMIES];
-    int itemTimer = 0;
-    int[] enemiesTimer = new int[MAX_ENEMIES];
+    [Header("Player")]
+    public Health health;
 
     public const int MAX_INVENTORY = 7;
+    public GameObject[] inventory;
 
     public GameMode mode;
     public GameState state;
-    public bool isStateReady = false;
+
+    [Header("References")]
     public GridMap grid;
+    public Spawner spawner;
     public GameObject storage;
-    public GameObject[] inventory;
-    public int maxItem;
-    public int countItem = 0;
-    public int killCount = 0;
-    public Vector2Int startTime;
+    public QuestManager quest;
 
     GameObject buildSlot;
     GameUI gameUI;
     CameraController controller;
 
-    //จริงๆต้องอยู่ใน GameUI แต่ไม่ทันแล้ว
-    public Text endTitle;
-    public Image endIcon;
-    public Text endInfo;
-    public GameObject endWindow;
-    public Sprite gameOver;
-    public Sprite gameWin;
-
-    public Image warning;
-    bool attacking;
+    [Header("Data")]
+    public bool pause = false;
+    public bool isSuccessfullyBuildOnce = false;
+    public int maxItem;
+    public int countItem = 0;
+    public int killCount = 0;
+    public Vector2Int startTime;
 
     public Vector2 gridSize;
     public Vector2 cellSize;
 
-    public void showWarning()
-    {
-        warning.gameObject.SetActive(true);
-        if (!attacking)
-        {
-            StartCoroutine(EndWarning());
-        }
-    }
-
-    IEnumerator EndWarning()
-    {
-        attacking = true;
-        yield return new WaitForSeconds(7);
-        warning.gameObject.SetActive(false);
-        attacking = false;
-        yield return null;
-    }
-
+    
+    
     void Start()
     {
-        currentEnemies = new int[MAX_ENEMIES];
-        enemiesTimer = new int[MAX_ENEMIES];
+        isSuccessfullyBuildOnce = false;
+        pause = true; 
 
         inventory = new GameObject[MAX_INVENTORY];
         gameUI = GetComponent<GameUI>();
@@ -130,14 +90,9 @@ public class Gameplay : MonoBehaviour
 
     IEnumerator StartGame()
     {
-        yield return new WaitForSeconds(7);
-        gameUI.ShowAll();
-        yield return new WaitForSeconds(2);
-        InitState(GameState.Prepare);
-        yield return new WaitForSeconds(2);
-        gameUI.SetTimer(startTime.x, startTime.y);
-        gameUI.StartTimer();
-
+        yield return new WaitForSeconds(5);
+        quest.isReady = true;
+        quest.ResetRoute();
         yield return null;
     }
 
@@ -145,138 +100,36 @@ public class Gameplay : MonoBehaviour
     {
         UpdateBuild();
         UpdateState();
-        UpdateSpawner();
     }
-
-    public void UpdateSpawner()
-    {
-        bool spawnable = false;
-        // Error prevention
-        if (currentItem < 0) currentItem = 0;
-        for(int i = 0; i < MAX_ENEMIES; i++) if (currentEnemies[i] < 0) currentEnemies[i] = 0;
-
-        switch (state) {
-            case GameState.Prepare:
-                if (itemTimer >= cooldownItemSpawnPrepare && currentItem < maxItemSpawnPrepare)
-                {
-                    spawnable = false;
-                    itemTimer = 0;
-                    Vector2Int gridPoint = new Vector2Int(0, 0);
-                    UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
-                    int itemType = UnityEngine.Random.Range(0, MAX_ITEMS);
-                    do {
-                        // หาจนกว่าจะเจอที่ว่าง
-                        UnityEngine.Random.InitState((int)DateTime.Now.Ticks + 1);
-                        gridPoint.x = UnityEngine.Random.Range(1, grid.size.x - 2);
-                        gridPoint.y = UnityEngine.Random.Range(1, grid.size.y - 2);
-                        spawnable = canSpawnEntity(gridPoint);
-                    } while (!spawnable);
-                    // Spawn
-                    SpawnItem(Items[itemType], gridPoint);
-                    currentItem++;
-                }
-                for (int i = 0; i < MAX_ENEMIES; i++)
-                {
-                    if (enemiesTimer[i] >= cooldownEnemiesSpawnPerTypeWave1[i] && currentEnemies[i] < maxEnemiesSpawnPerTypeWave1[i])
-                    {
-                        spawnable = false;
-                        enemiesTimer[i] = 0;
-                        Vector2Int gridPoint = new Vector2Int(0, 0);
-                        UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
-                        do
-                        {
-                            // หาจนกว่าจะเจอที่ว่าง
-                            UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
-                            bool vertical = UnityEngine.Random.value > 0.5f; ;
-                            UnityEngine.Random.InitState((int)DateTime.Now.Ticks + 1);
-                            bool side = UnityEngine.Random.value > 0.5f; ;
-                            if (vertical)
-                            {
-                                UnityEngine.Random.InitState((int)DateTime.Now.Ticks + 2);
-                                gridPoint.x = UnityEngine.Random.Range(1, grid.size.x - 2);
-                                gridPoint.y = side ? 0: grid.size.y - 1;
-                            }
-                            else
-                            {
-                                UnityEngine.Random.InitState((int)DateTime.Now.Ticks + 2);
-                                gridPoint.x = side ? 0 : grid.size.x - 1;
-                                gridPoint.y = UnityEngine.Random.Range(1, grid.size.y - 2);
-                            }
-                            spawnable = canSpawnEntity(gridPoint);
-                        } while (!spawnable);
-                        // Spawn
-                        SpawnEnemy(Enemies[i], gridPoint);
-                        currentEnemies[i]++;
-                    }
-                }
-                break;
-            case GameState.Wave1:
-                break;
-            default: break;        
-        }
-
-        for (int i = 0; i < MAX_ENEMIES; i++) enemiesTimer[i]++;
-        itemTimer++;
-    }
-
-    public void SpawnEnemy(GameObject baseEntity, Vector2Int gridPoint)
-    {
-        Vector3 point = new Vector3(
-                (-gridSize.x / 2) + ((gridPoint.x * cellSize.x) + (cellSize.x / 2)),
-                 (gridSize.y / 2) - ((gridPoint.y * cellSize.y) + (cellSize.y / 2)), 1);
-
-        GameObject entity = Instantiate(baseEntity, point, Quaternion.identity);
-        entity.transform.SetParent(grid.transform.parent.transform);
-        entity.GetComponent<AIDestinationSetter>().target = grid.transform.parent.Find("Base/Target");
-    }
-
-    public void SpawnItem(GameObject baseEntity, Vector2Int gridPoint)
-    {
-        Vector3 point = new Vector3(
-                (-gridSize.x / 2) + ((gridPoint.x * cellSize.x) + (cellSize.x / 2)),
-                 (gridSize.y / 2) - ((gridPoint.y * cellSize.y) + (cellSize.y / 2)), 1);
-
-        GameObject entity = Instantiate(baseEntity, point, Quaternion.identity);
-        entity.transform.SetParent(grid.transform.parent.transform);
-    }
-    public bool canSpawnEntity(Vector2Int gridPoint)
-    {
-        if (grid.data[(gridPoint.x * grid.size.y) + gridPoint.y] == 0)
-        {
-            return true;
-        }
-        return false;
-    }
-
+    
     // Game State Functions
 
     public void InitState(GameState state)
     {
         this.state = state;
-        this.isStateReady = false;
 
-        string title = gameUI.levelName;
-        string description = gameUI.levelDescription;
+        string title = levelName;
+        string description = levelDescription;
         switch (state) {
             case GameState.Prepare: 
                 title = "Build Your Base"; 
                 description = "Prepare For The Night";
-                itemTimer = cooldownItemSpawnPrepare;
+                spawner.itemTimer = spawner.cooldownItemSpawnPrepare;
                 break;
             case GameState.Wave1: 
                 title = "Wave 1"; 
-                description = "Easy One";
-                itemTimer = cooldownItemSpawnWave1;
+                description = "Sunset Horde";
+                spawner.itemTimer = spawner.cooldownItemSpawnWave1;
                 break;
             case GameState.Wave2: 
                 title = "Wave 2"; 
                 description = "Midnight Crisis";
-                itemTimer = cooldownItemSpawnWave2;
+                spawner.itemTimer = spawner.cooldownItemSpawnWave2;
                 break;
             case GameState.Wave3: 
                 title = "Wave 3"; 
-                description = "Last Stage";
-                itemTimer = cooldownItemSpawnWave3;
+                description = "Until Dawn";
+                spawner.itemTimer = spawner.cooldownItemSpawnWave3;
                 break;
             case GameState.End: 
                 title = "Survive"; 
@@ -294,11 +147,9 @@ public class Gameplay : MonoBehaviour
 
     public void UpdateState()
     {
-        if (baseHealth.currentHealth <= 0)
+        if (health.currentHealth <= 0)
         {
-            endTitle.text = "Game Over";
-            endIcon.sprite = gameOver;
-            endInfo.text = "Your base is broken.";
+            gameUI.SetGameEnd("Game Over", "Your base is broken.\nAll hope is gone.\nYou killed " + killCount + " enemies.", true);
             gameUI.HideAll();
             InitState(GameState.GameOver);
             StartCoroutine(EndGame());
@@ -319,24 +170,20 @@ public class Gameplay : MonoBehaviour
             // Wave 3
             InitState(GameState.Wave3);
         }
-        else if (TimeManeger.Hour >= 6 && TimeManeger.Hour < 15 && state != GameState.End)
+        else if (TimeManeger.Hour >= 6 && TimeManeger.Hour < 9 && state != GameState.End)
         {
             // End Game
-            bool win = passObjective();
+            bool win = quest.CheckQuest();
             if (win)
             {
-                endTitle.text = "Win";
-                endIcon.sprite = gameWin;
-                endInfo.text = "Congratuation! You survived!";
+                gameUI.SetGameEnd("Congratuation", "You survived the night!\nYou killed " + killCount + " enemies.", false);
                 gameUI.HideAll();
                 InitState(GameState.End);
                 StartCoroutine(EndGame());
             }
             else
             {
-                endTitle.text = "Game Over";
-                endIcon.sprite = gameOver;
-                endInfo.text = "You seems to forget something?\n(Objective is not fulfilled.)";
+                gameUI.SetGameEnd("Game Over", "Objective is not fulfilled.\nAll hope is gone.\nYou killed " + killCount + " enemies.", true);
                 gameUI.HideAll();
                 InitState(GameState.GameOver);
                 StartCoroutine(EndGame());
@@ -346,27 +193,30 @@ public class Gameplay : MonoBehaviour
 
     IEnumerator EndGame()
     {
-        yield return new WaitForSeconds(7);
+        yield return new WaitForSeconds(3);
         gameUI.backgroundUI.SetActive(true);
-        endWindow.SetActive(true);
+        gameUI.endUI.SetActive(true);
 
         yield return null;
     }
 
-    bool passObjective()
-	{
-        if (level == 0) return true;
-        for (int i = 0; i < MAX_INVENTORY; i++)
-        {
-            if (inventory[i].GetComponent<PickableItem>().type == ItemType.paper)
-            {
-                return true;
-            }
-        }
-        return false;
-	}
-
     // Functions
+
+    public void Pause()
+    {
+        pause = true;
+    }
+
+    public void Resume()
+    {
+        pause = false;
+    }
+
+    public void TogglePause()
+    {
+        pause = !pause;
+    }
+
     public void ResetKill()
     {
         killCount = 0;
@@ -388,6 +238,40 @@ public class Gameplay : MonoBehaviour
             if (!inventory[i]) return i;
         }
         return -1;
+    }
+    
+    public bool findItem(ItemType type)
+    {
+        for (int i = 0; i < MAX_INVENTORY; i++)
+        {
+            if (inventory[i])
+            {
+                if (inventory[i].GetComponent<PickableItem>().type == type)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public void clearItem()
+    {
+        for (int i = 0; i < inventory.Length; i++)
+        {
+            if (inventory[i])
+            {
+                GameObject icon = gameUI.inventoryUI.transform.Find("Slot" + (i + 1) + "/Icon").gameObject;
+                Destroy(icon.GetComponent<Button>());
+                Destroy(icon.GetComponent<Image>());
+                Destroy(icon);
+
+                GameObject item = inventory[i];
+                inventory[i] = null;
+                spawner.currentItem--;
+                Destroy(item);
+            }
+        }
     }
 
     public void addItem(PickableItem item,int slot)
@@ -426,7 +310,7 @@ public class Gameplay : MonoBehaviour
         inventory[slot] = null;
         if (fulfillment)
         {
-            currentItem--;
+            spawner.currentItem--;
             Destroy(item);
         }
         else
